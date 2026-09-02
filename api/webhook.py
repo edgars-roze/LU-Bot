@@ -17,7 +17,7 @@ async def webhook(request: Request):
 	chat_id = message['chat']['id']
 	text = message.get('text', '')
 
-	requests_async.post(
+	await requests_async.post(
         f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage',
 		json={
 			'chat_id': chat_id,
