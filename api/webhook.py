@@ -25,6 +25,6 @@ async def webhook(request: fastapi.Request):
 	chat_id = message['chat']['id']
 	text = message.get('text')
 
-	say(text, chat_id)
+	await say(text, chat_id)
 
 	return 'OK'
