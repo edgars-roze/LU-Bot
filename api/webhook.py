@@ -25,10 +25,10 @@ async def webhook(request: fastapi.Request):
 	chat_id = message['chat']['id']
 	text = message.get('text')
 
-	await say(chat_id, text=[
-		"line",
-		"line",
-		"line"
-	])
+	await say(chat_id, 
+		"text"
+		"text"
+		"text"   
+	)
 
 	return 'OK'
