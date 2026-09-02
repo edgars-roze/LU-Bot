@@ -1,2 +1,2 @@
 fastapi
-requests
+requests_async
