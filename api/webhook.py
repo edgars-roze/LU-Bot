@@ -1,19 +1,20 @@
 import os
 import requests
+from flask import Flask, request
+
+app = Flask(__name__)
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 
 
-def handler(request):
+@app.post("/api/webhook")
+def webhook():
     update = request.get_json()
 
     message = update.get("message")
 
     if not message:
-        return {
-            "statusCode": 200,
-            "body": "OK"
-        }
+        return "OK", 200
 
     chat_id = message["chat"]["id"]
     text = message.get("text", "")
@@ -26,7 +27,4 @@ def handler(request):
         }
     )
 
-    return {
-        "statusCode": 200,
-        "body": "OK"
-    }
+    return "OK", 200
