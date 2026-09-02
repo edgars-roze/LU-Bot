@@ -1,14 +1,14 @@
 import os
 import requests
-from flask import Flask, request
+from fastapi import FastAPI, Request
 
-app = Flask(__name__)
+app = FastAPI()
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
 @app.post('/api/webhook')
-def webhook():
-	update = request.get_json()
+async def webhook(request: Request):
+	update = await request.get_json()
 	message = update.get('message')
 
 	if not message:
@@ -21,7 +21,7 @@ def webhook():
         f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage',
 		json={
 			'chat_id': chat_id,
-			'text': f'You said: {text}'
+			'text': f'{text}'
 		}
 	)
 
