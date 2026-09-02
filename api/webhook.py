@@ -1,23 +1,30 @@
 import os
 import fastapi
-import telegram
+import requests_async
 
-api = fastapi.FastAPI()
+app = fastapi.FastAPI()
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
-bot = telegram.Bot(BOT_TOKEN)
-app = telegram.Application.builder().token(BOT_TOKEN).build()
-
-async def help(update: telegram.Update, context):
-	await update.message.reply_text(
-		"No help"
+async def say(text, chat_id):
+	await requests_async.post(
+		f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage',
+		json={
+			'chat_id': chat_id,
+			'text': f'{text}'
+		}
 	)
 
-app.add_handler(telegram.CommandHandler('help', help))
-
-@api.post('/api/webhook')
+@app.post('/api/webhook')
 async def webhook(request: fastapi.Request):
 	json = await request.json()
-	await app.process_update(telegram.Update.de_json(json, bot))
+	message = json.get('message')
+
+	if not message:
+		return 'OK'
+	
+	chat_id = message['chat']['id']
+	text = message.get('text')
+
+	say(text, chat_id)
 
 	return 'OK'

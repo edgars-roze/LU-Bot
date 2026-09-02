@@ -1,2 +1,2 @@
 fastapi
-telegram
+requests_async
